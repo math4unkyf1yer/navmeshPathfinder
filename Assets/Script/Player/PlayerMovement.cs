@@ -15,20 +15,27 @@ public class PlayerMovement : MonoBehaviour
     private float verticalInput;
     private Vector3 moveDirection;
 
+    public bool isHiding;
+    private Transform unhide;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true; // Prevents unwanted rotation
     }
 
+
     void Update()
     {
-        GetInput();
+        GetInput();        
     }
 
     void FixedUpdate()
     {
-        MovePlayer();
+        if(isHiding == false)
+        {
+            MovePlayer();
+        }
     }
 
     private void GetInput()
@@ -45,5 +52,21 @@ public class PlayerMovement : MonoBehaviour
 
         // Apply velocity directly for precise movement
         rb.velocity = moveDirection.normalized * moveSpeed + new Vector3(0, rb.velocity.y, 0);
+    }
+    public void Hide(Transform hidePos, Transform unHidePos)
+    {
+        unhide = unHidePos;
+        rb.isKinematic = true; // Disables physics but keeps collisions
+        rb.useGravity = false;
+        transform.position = hidePos.position; // Move to hiding position
+        isHiding = true; // Set to hiding state
+    }
+
+    public void UnHide()
+    {
+        isHiding = false;
+        rb.isKinematic = false; // Re-enable physics
+        rb.useGravity = true;  // Re-enable gravity
+        transform.position = unhide.position; // Move back to unhide position
     }
 }

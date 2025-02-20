@@ -14,14 +14,16 @@ public class EnemyPatrol : MonoBehaviour
     public LayerMask obstacleLayer;
 
     private NavMeshAgent agent;
-    private bool playerInSight = false;
+    public bool playerInSight = false;
 
     //player
     public GameObject playerCharacter;
+    private PlayerMovement playerMovementScript;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        playerMovementScript = playerCharacter.GetComponent<PlayerMovement>();
         if (patrolPoints.Length > 0)
         {
             agent.SetDestination(patrolPoints[currentPoint].position);
@@ -48,7 +50,7 @@ public class EnemyPatrol : MonoBehaviour
     }
     void CheckForPlayer()
     {
-        if(playerCharacter != null)
+        if(playerCharacter != null && playerMovementScript.isHiding == false)
         {
             playerInSight = false;
 
