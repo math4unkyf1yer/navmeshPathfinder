@@ -28,7 +28,12 @@ public class Interact : MonoBehaviour
     }
     private void Update()
     {
-        if(player != null)
+        Hiding();
+    }
+
+    void Hiding()
+    {
+        if (player != null && hidePos!= null)
         {
             if (Vector3.Distance(transform.position, player.transform.position) < interactionRadius)
             {
@@ -51,11 +56,12 @@ public class Interact : MonoBehaviour
             }
             else
             {
-                if(interactText.text != "")
+                if (interactText.text != "")
                 {
                     interactText.text = "";
                 }
             }
         }
     }
+
 }
