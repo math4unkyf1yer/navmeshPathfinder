@@ -111,7 +111,6 @@ public class EnemyPatrol : MonoBehaviour
                 enemySound.Play();
             }
             float playerDistance = Vector3.Distance(transform.position, player.position);
-            Debug.Log(playerDistance);
             if (playerDistance < 2.9f)
             {
                 Destroy(playerCharacter);
