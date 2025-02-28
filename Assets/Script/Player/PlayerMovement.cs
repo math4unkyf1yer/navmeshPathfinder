@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private float currentStamina; // Current stamina value
     private Vector3 moveDirection;
 
-    public Slider staminaSlider;
+    private Slider staminaSlider;
 
     public bool isHiding;
     public bool running;
@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        staminaSlider = GameObject.Find("StaminaSlider").GetComponent<Slider>();
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true; // Prevents unwanted rotation
         currentStamina = maxStamina; // Initialize stamina
