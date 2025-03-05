@@ -22,6 +22,8 @@ public class EnemyPatrol : MonoBehaviour
     //player
     public GameObject playerCharacter;
     private PlayerMovement playerMovementScript;
+    public GameObject deadPage;
+    private bool playerIsDEAD;
 
     //Lurk 
     private Vector3 lastKnownPosition;
@@ -43,7 +45,7 @@ public class EnemyPatrol : MonoBehaviour
     void Update()
     {
         CheckForPlayer();
-        if (playerInSight)
+        if (playerInSight && playerMovementScript.isInvisible == false)
         {
             ChasePlayer();
         }
@@ -68,7 +70,7 @@ public class EnemyPatrol : MonoBehaviour
     void CheckForPlayer()
     {
         
-        if (playerCharacter != null && playerMovementScript.isHiding == false)
+        if (playerCharacter != null && playerMovementScript.isHiding == false && playerMovementScript.isInvisible == false)
         {
             playerInSight = false;
             Vector3 directionToPlayer = (player.position - transform.position).normalized;
@@ -100,9 +102,14 @@ public class EnemyPatrol : MonoBehaviour
             currentLurkTime = 0f; // Reset the lurking timer
         }
     }
-
+ 
     void ChasePlayer()
     {
+        if (playerIsDEAD)
+        {
+            enemySound.Stop();
+            return;
+        }
         if (agent != null && playerCharacter !=null)
         {
             if (!enemySound.isPlaying)
@@ -113,6 +120,10 @@ public class EnemyPatrol : MonoBehaviour
             float playerDistance = Vector3.Distance(transform.position, player.position);
             if (playerDistance < 2.9f)
             {
+                playerIsDEAD = true;
+                deadPage.gameObject.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 Destroy(playerCharacter);
             }
             else

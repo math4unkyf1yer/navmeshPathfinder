@@ -29,6 +29,7 @@ public class Interact : MonoBehaviour
     private void Update()
     {
         Hiding();
+     
     }
 
     void Hiding()

@@ -23,10 +23,16 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 moveDirection;
 
     private Slider staminaSlider;
+    public Slider spellCooldown;
 
     public bool isHiding;
     public bool running;
+    public bool isSpellLearned;
     private Transform unhide;
+    private bool isOnCooldown = false;
+    private float cooldownDuration = 5f;
+    private float abilityCooldown = 30f;
+    public bool isInvisible;
 
     void Start()
     {
@@ -41,8 +47,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(currentStamina);
         GetInput();
+        if (Input.GetKeyDown(KeyCode.Q) && isSpellLearned && !isOnCooldown)
+        {
+            Debug.Log("player is invisible");
+            ActivateInvisibility();
+        }
         UpdateStaminaSlider();
         HandleStamina();
         
@@ -128,5 +138,67 @@ public class PlayerMovement : MonoBehaviour
         rb.isKinematic = false; // Re-enable physics
         rb.useGravity = true;  // Re-enable gravity
         transform.position = unhide.position; // Move back to unhide position
+    }
+    void ActivateInvisibility()
+    {
+        if (!isInvisible)
+        {
+            isOnCooldown = true;
+            isInvisible = true;
+
+            if (spellCooldown != null)
+            {
+                spellCooldown.gameObject.SetActive(true);
+                spellCooldown.maxValue = cooldownDuration;
+                spellCooldown.value = cooldownDuration;
+            }
+
+            StartCoroutine(InvisibilityCooldown());
+        }
+    }
+
+    IEnumerator InvisibilityCooldown()
+    {
+        float timer = cooldownDuration;
+
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            if (spellCooldown != null)
+            {
+                spellCooldown.value = timer;
+            }
+            yield return null;
+        }
+
+
+
+        isInvisible = false;
+        StartCoroutine(AbilityCooldownn());
+    }
+    IEnumerator AbilityCooldownn()
+    {
+        float timer = abilityCooldown;
+        float sliderTimer = 0f;
+
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            sliderTimer = (30f - timer) / 30f * 5f;
+
+            if (spellCooldown != null)
+            {
+                spellCooldown.value = sliderTimer;
+            }
+
+            yield return null;
+        }
+
+        isOnCooldown = false;
+
+        if (spellCooldown != null)
+        {
+            spellCooldown.gameObject.SetActive(false);
+        }
     }
 }
