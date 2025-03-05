@@ -44,8 +44,20 @@ public class EnemyPatrol : MonoBehaviour
 
     void Update()
     {
+        if(playerMovementScript.isInvisible == true && playerMovementScript != null)
+        {
+            float playerDistance = Vector3.Distance(transform.position, player.position);
+            if (playerDistance < 2.9f)
+            {
+                playerIsDEAD = true;
+                deadPage.gameObject.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                Destroy(playerCharacter);
+            }
+        }
         CheckForPlayer();
-        if (playerInSight && playerMovementScript.isInvisible == false)
+        if (playerInSight)
         {
             ChasePlayer();
         }
@@ -69,8 +81,13 @@ public class EnemyPatrol : MonoBehaviour
     }
     void CheckForPlayer()
     {
-        
-        if (playerCharacter != null && playerMovementScript.isHiding == false && playerMovementScript.isInvisible == false)
+        if(playerMovementScript.isInvisible == true)
+        {
+            playerInSight = false;
+            Lurking();
+            return;
+        }
+        if (playerCharacter != null && playerMovementScript.isHiding == false)
         {
             playerInSight = false;
             Vector3 directionToPlayer = (player.position - transform.position).normalized;
@@ -94,6 +111,10 @@ public class EnemyPatrol : MonoBehaviour
             }
         }
 
+        Lurking();
+    }
+    void Lurking()
+    {
         // If the player was in sight but now isn't, start lurking
         if (!playerInSight && !isLurking && checkIfSawPlayer == true)
         {

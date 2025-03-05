@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering.PostProcessing;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -33,6 +34,8 @@ public class PlayerMovement : MonoBehaviour
     private float cooldownDuration = 5f;
     private float abilityCooldown = 30f;
     public bool isInvisible;
+    private Vignette vignette;
+    public PostProcessVolume postProcessVolume;
 
     void Start()
     {
@@ -42,6 +45,15 @@ public class PlayerMovement : MonoBehaviour
         currentStamina = maxStamina; // Initialize stamina
         staminaCooldownTimer = 0f; // Initialize the cooldown timer
         staminaSlider.maxValue = maxStamina;
+        if (postProcessVolume != null)
+        {
+            postProcessVolume.profile.TryGetSettings(out vignette);
+        }
+
+        if (vignette != null)
+        {
+            vignette.intensity.value = 0f;
+        }
     }
 
 
@@ -59,8 +71,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void FixedUpdate()
-    {
-        
+    {        
         if(isHiding == false)
         {
             MovePlayer();
@@ -153,6 +164,11 @@ public class PlayerMovement : MonoBehaviour
                 spellCooldown.value = cooldownDuration;
             }
 
+            if (vignette != null)
+            {
+                StartCoroutine(FadeVignette(0f, 0.5f, 0.5f));
+            }
+
             StartCoroutine(InvisibilityCooldown());
         }
     }
@@ -171,7 +187,10 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-
+        if (vignette != null)
+        {
+            StartCoroutine(FadeVignette(0.5f, 0f, 0.5f));
+        }
 
         isInvisible = false;
         StartCoroutine(AbilityCooldownn());
@@ -196,9 +215,18 @@ public class PlayerMovement : MonoBehaviour
 
         isOnCooldown = false;
 
-        if (spellCooldown != null)
+    }
+    IEnumerator FadeVignette(float startValue, float endValue, float duration)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < duration)
         {
-            spellCooldown.gameObject.SetActive(false);
+            elapsed += Time.deltaTime;
+            vignette.intensity.value = Mathf.Lerp(startValue, endValue, elapsed / duration);
+            yield return null;
         }
+
+        vignette.intensity.value = endValue;
     }
 }
