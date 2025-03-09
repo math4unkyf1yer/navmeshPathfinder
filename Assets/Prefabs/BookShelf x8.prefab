@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3362780814596786582}
+  - component: {fileID: 8000703005460923810}
   m_Layer: 0
   m_Name: BookShelf x8
   m_TagString: Untagged
@@ -33,6 +34,22 @@ Transform:
   - {fileID: 5541728894542853588}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!208 &8000703005460923810
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 373461955165113000}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 2.345, y: 1.24, z: 0.605}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.2, y: 0, z: -0.22}
+  m_TimeToStationary: 0.5
 --- !u!1001 &913651758739089956
 PrefabInstance:
   m_ObjectHideFlags: 0

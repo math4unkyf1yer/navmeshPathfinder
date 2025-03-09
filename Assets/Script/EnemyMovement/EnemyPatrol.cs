@@ -36,6 +36,7 @@ public class EnemyPatrol : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         playerMovementScript = playerCharacter.GetComponent<PlayerMovement>();
+
         if (patrolPoints.Length > 0)
         {
             agent.SetDestination(patrolPoints[currentPoint].position);
@@ -44,68 +45,49 @@ public class EnemyPatrol : MonoBehaviour
 
     void Update()
     {
-        if(playerMovementScript.isInvisible == true && playerMovementScript != null)
-        {
-            float playerDistance = Vector3.Distance(transform.position, player.position);
-            if (playerDistance < 2.9f)
-            {
-                playerIsDEAD = true;
-                deadPage.gameObject.SetActive(true);
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                Destroy(playerCharacter);
-            }
-        }
+        if (playerCharacter == null) return;
+
         CheckForPlayer();
+
         if (playerInSight)
         {
             ChasePlayer();
         }
+        else if (isLurking)
+        {
+            LurkAtLastKnownPosition();
+        }
         else
         {
-            if (isLurking)
-            {
-                LurkAtLastKnownPosition();
-            }
-            else
-            {
-                enemySound.Stop();
-                if (agent.remainingDistance < 0.5f && !agent.pathPending)
-                {
-                    // Move to the next waypoint
-                    currentPoint = (currentPoint + 1) % patrolPoints.Length;
-                    agent.SetDestination(patrolPoints[currentPoint].position);
-                }
-            }
+            Patrol();
         }
     }
+
     void CheckForPlayer()
     {
-        if(playerMovementScript.isInvisible == true)
+        if (playerMovementScript.isInvisible || playerMovementScript.isHiding)
         {
             playerInSight = false;
             Lurking();
             return;
         }
-        if (playerCharacter != null && playerMovementScript.isHiding == false)
-        {
-            playerInSight = false;
-            Vector3 directionToPlayer = (player.position - transform.position).normalized;
 
-            if (Vector3.Distance(transform.position, player.position) < detectionRange)
+        playerInSight = false;
+        Vector3 directionToPlayer = (player.position - transform.position).normalized;
+
+        if (Vector3.Distance(transform.position, player.position) < detectionRange)
+        {
+            float angle = Vector3.Angle(transform.forward, directionToPlayer);
+            if (angle < fieldOfViewAngle / 2)
             {
-                float angle = Vector3.Angle(transform.forward, directionToPlayer);
-                if (angle < fieldOfViewAngle / 2)
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, directionToPlayer, out hit, detectionRange))
                 {
-                    RaycastHit hit;
-                    if (Physics.Raycast(transform.position, directionToPlayer, out hit, detectionRange))
+                    if (hit.transform.CompareTag("Player"))
                     {
-                        if (hit.transform.CompareTag("Player"))
-                        {
-                            playerInSight = true;
-                            checkIfSawPlayer = true;
-                            isLurking = false; // Stop lurking if the player is found
-                        }
+                        playerInSight = true;
+                        checkIfSawPlayer = true;
+                        isLurking = false; // Stop lurking if the player is found
                     }
                 }
             }
@@ -113,17 +95,17 @@ public class EnemyPatrol : MonoBehaviour
 
         Lurking();
     }
+
     void Lurking()
     {
-        // If the player was in sight but now isn't, start lurking
-        if (!playerInSight && !isLurking && checkIfSawPlayer == true)
+        if (!playerInSight && !isLurking && checkIfSawPlayer)
         {
             lastKnownPosition = player.position;
             isLurking = true;
             currentLurkTime = 0f; // Reset the lurking timer
         }
     }
- 
+
     void ChasePlayer()
     {
         if (playerIsDEAD)
@@ -131,57 +113,66 @@ public class EnemyPatrol : MonoBehaviour
             enemySound.Stop();
             return;
         }
-        if (agent != null && playerCharacter !=null)
+
+        if (!enemySound.isPlaying)
         {
-            if (!enemySound.isPlaying)
-            {
-                enemySound.clip = enemyChaseSound;
-                enemySound.Play();
-            }
-            float playerDistance = Vector3.Distance(transform.position, player.position);
-            if (playerDistance < 2.9f)
-            {
-                playerIsDEAD = true;
-                deadPage.gameObject.SetActive(true);
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                Destroy(playerCharacter);
-            }
-            else
-            {
-                agent.SetDestination(player.position);
-            }
+            enemySound.clip = enemyChaseSound;
+            enemySound.Play();
+        }
+
+        float playerDistance = Vector3.Distance(transform.position, player.position);
+        if (playerDistance < 2.9f)
+        {
+            PlayerDeath();
+        }
+        else
+        {
+            agent.SetDestination(player.position);
         }
     }
+
     void LurkAtLastKnownPosition()
     {
-        // Change the enemy's field of view to 360 for searching the area
-        fieldOfViewAngle = 360f;
-
-        // Move towards the last known position of the player
-        agent.SetDestination(lastKnownPosition);
-
-        // Check if the enemy is at the last known position
-        if (Vector3.Distance(transform.position, lastKnownPosition) < 1f)
+        fieldOfViewAngle = 360f; // Increase FOV while searching
+        if (!agent.pathPending && agent.remainingDistance < 0.5f) // Ensure the enemy has reached the position
         {
-            // Start rotating to scan the area
-            transform.Rotate(0f, 90f * Time.deltaTime, 0f); // Rotate the enemy around its axis
+            agent.SetDestination(transform.position); // Stop moving
 
-            // Increase the lurking time
-            currentLurkTime += Time.deltaTime;
+            currentLurkTime += Time.deltaTime; // Start the lurking timer
+
+            transform.Rotate(0f, 90f * Time.deltaTime, 0f); // Scan the area
 
             if (currentLurkTime >= lurkingTime)
             {
-                // After the lurking time, stop looking and return to patrolling
                 isLurking = false;
                 checkIfSawPlayer = false;
-                fieldOfViewAngle = 90f; // Restore original field of view
-                agent.SetDestination(patrolPoints[currentPoint].position); // Start patrolling again
+                fieldOfViewAngle = 90f; // Restore FOV
+                Patrol(); // Resume patrol
             }
         }
     }
 
-        void OnDrawGizmos()
+    void Patrol()
+    {
+        enemySound.Stop();
+
+        if (agent.remainingDistance < 0.5f && !agent.pathPending)
+        {
+            currentPoint = (currentPoint + 1) % patrolPoints.Length;
+            agent.SetDestination(patrolPoints[currentPoint].position);
+        }
+    }
+
+    void PlayerDeath()
+    {
+        playerIsDEAD = true;
+        deadPage.gameObject.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Destroy(playerCharacter);
+    }
+
+    void OnDrawGizmos()
     {
         if (player == null) return;
 
