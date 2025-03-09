@@ -9,7 +9,11 @@ public class MoveCamera : MonoBehaviour
     public EnemyPatrol enemyScript;
     private void Start()
     {
-        enemyScript = GameObject.Find("Enemy").GetComponent<EnemyPatrol>();
+        bool enemy = GameObject.Find("Enemy");
+        if(enemy == true)
+        {
+            enemyScript = GameObject.Find("Enemy").GetComponent<EnemyPatrol>();
+        }
     }
     // Update is called once per frame
     void Update()
