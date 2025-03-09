@@ -22,6 +22,8 @@ public class EnemyPatrol : MonoBehaviour
     //player
     public GameObject playerCharacter;
     private PlayerMovement playerMovementScript;
+    public GameObject deadPage;
+    private bool playerIsDEAD;
 
     //Lurk 
     private Vector3 lastKnownPosition;
@@ -42,6 +44,18 @@ public class EnemyPatrol : MonoBehaviour
 
     void Update()
     {
+        if(playerMovementScript.isInvisible == true && playerMovementScript != null)
+        {
+            float playerDistance = Vector3.Distance(transform.position, player.position);
+            if (playerDistance < 2.9f)
+            {
+                playerIsDEAD = true;
+                deadPage.gameObject.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                Destroy(playerCharacter);
+            }
+        }
         CheckForPlayer();
         if (playerInSight)
         {
@@ -67,7 +81,12 @@ public class EnemyPatrol : MonoBehaviour
     }
     void CheckForPlayer()
     {
-        
+        if(playerMovementScript.isInvisible == true)
+        {
+            playerInSight = false;
+            Lurking();
+            return;
+        }
         if (playerCharacter != null && playerMovementScript.isHiding == false)
         {
             playerInSight = false;
@@ -92,6 +111,10 @@ public class EnemyPatrol : MonoBehaviour
             }
         }
 
+        Lurking();
+    }
+    void Lurking()
+    {
         // If the player was in sight but now isn't, start lurking
         if (!playerInSight && !isLurking && checkIfSawPlayer == true)
         {
@@ -100,9 +123,14 @@ public class EnemyPatrol : MonoBehaviour
             currentLurkTime = 0f; // Reset the lurking timer
         }
     }
-
+ 
     void ChasePlayer()
     {
+        if (playerIsDEAD)
+        {
+            enemySound.Stop();
+            return;
+        }
         if (agent != null && playerCharacter !=null)
         {
             if (!enemySound.isPlaying)
@@ -113,6 +141,10 @@ public class EnemyPatrol : MonoBehaviour
             float playerDistance = Vector3.Distance(transform.position, player.position);
             if (playerDistance < 2.9f)
             {
+                playerIsDEAD = true;
+                deadPage.gameObject.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 Destroy(playerCharacter);
             }
             else

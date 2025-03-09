@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering.PostProcessing;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -23,10 +24,18 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 moveDirection;
 
     private Slider staminaSlider;
+    public Slider spellCooldown;
 
     public bool isHiding;
     public bool running;
+    public bool isSpellLearned;
     private Transform unhide;
+    private bool isOnCooldown = false;
+    private float cooldownDuration = 5f;
+    private float abilityCooldown = 30f;
+    public bool isInvisible;
+    private Vignette vignette;
+    public PostProcessVolume postProcessVolume;
 
     void Start()
     {
@@ -36,21 +45,33 @@ public class PlayerMovement : MonoBehaviour
         currentStamina = maxStamina; // Initialize stamina
         staminaCooldownTimer = 0f; // Initialize the cooldown timer
         staminaSlider.maxValue = maxStamina;
+        if (postProcessVolume != null)
+        {
+            postProcessVolume.profile.TryGetSettings(out vignette);
+        }
+
+        if (vignette != null)
+        {
+            vignette.intensity.value = 0f;
+        }
     }
 
 
     void Update()
     {
-        Debug.Log(currentStamina);
         GetInput();
+        if (Input.GetKeyDown(KeyCode.Q) && isSpellLearned && !isOnCooldown)
+        {
+            Debug.Log("player is invisible");
+            ActivateInvisibility();
+        }
         UpdateStaminaSlider();
         HandleStamina();
         
     }
 
     void FixedUpdate()
-    {
-        
+    {        
         if(isHiding == false)
         {
             MovePlayer();
@@ -128,5 +149,84 @@ public class PlayerMovement : MonoBehaviour
         rb.isKinematic = false; // Re-enable physics
         rb.useGravity = true;  // Re-enable gravity
         transform.position = unhide.position; // Move back to unhide position
+    }
+    void ActivateInvisibility()
+    {
+        if (!isInvisible)
+        {
+            isOnCooldown = true;
+            isInvisible = true;
+
+            if (spellCooldown != null)
+            {
+                spellCooldown.gameObject.SetActive(true);
+                spellCooldown.maxValue = cooldownDuration;
+                spellCooldown.value = cooldownDuration;
+            }
+
+            if (vignette != null)
+            {
+                StartCoroutine(FadeVignette(0f, 0.5f, 0.5f));
+            }
+
+            StartCoroutine(InvisibilityCooldown());
+        }
+    }
+
+    IEnumerator InvisibilityCooldown()
+    {
+        float timer = cooldownDuration;
+
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            if (spellCooldown != null)
+            {
+                spellCooldown.value = timer;
+            }
+            yield return null;
+        }
+
+        if (vignette != null)
+        {
+            StartCoroutine(FadeVignette(0.5f, 0f, 0.5f));
+        }
+
+        isInvisible = false;
+        StartCoroutine(AbilityCooldownn());
+    }
+    IEnumerator AbilityCooldownn()
+    {
+        float timer = abilityCooldown;
+        float sliderTimer = 0f;
+
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            sliderTimer = (30f - timer) / 30f * 5f;
+
+            if (spellCooldown != null)
+            {
+                spellCooldown.value = sliderTimer;
+            }
+
+            yield return null;
+        }
+
+        isOnCooldown = false;
+
+    }
+    IEnumerator FadeVignette(float startValue, float endValue, float duration)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            vignette.intensity.value = Mathf.Lerp(startValue, endValue, elapsed / duration);
+            yield return null;
+        }
+
+        vignette.intensity.value = endValue;
     }
 }
