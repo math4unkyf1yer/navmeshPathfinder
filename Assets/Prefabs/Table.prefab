@@ -153,7 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionRadius: 2
   gizmoColor: {r: 0, g: 1, b: 0, a: 1}
-  player: {fileID: 0}
+  player: {fileID: 6124221253947413536, guid: f1411f9777cb45c4a8e126e77584d212, type: 3}
   interactKey: 0
   hidePos: {fileID: 0}
   unHidePos: {fileID: 0}
