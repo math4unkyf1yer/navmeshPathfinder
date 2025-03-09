@@ -17,9 +17,12 @@ public class MoveCamera : MonoBehaviour
         if(cameraPosition != null)
         {
             transform.position = cameraPosition.position;
-            if (enemyScript.playerInSight)
+            if ( enemyScript != null)
             {
-                transform.position = cameraPosition.position + Random.insideUnitSphere * shakeAmount;
+                if (enemyScript.playerInSight)
+                {
+                    transform.position = cameraPosition.position + Random.insideUnitSphere * shakeAmount;
+                }
             }
         }
     }
