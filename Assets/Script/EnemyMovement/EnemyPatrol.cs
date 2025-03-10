@@ -6,6 +6,9 @@ using UnityEngine.AI;
 public class EnemyPatrol : MonoBehaviour
 {
     public Transform[] patrolPoints; // Waypoints for patrol
+    public Transform[] patrolPoints1;
+    public int whichPatrol = 0;
+    private int currentPoint2 = 0;
     private int currentPoint = 0;
     public float detectionRange = 10f; // How far the enemy can see
     public float fieldOfViewAngle = 90f; // Field of view in degrees
@@ -158,8 +161,16 @@ public class EnemyPatrol : MonoBehaviour
 
         if (agent.remainingDistance < 0.5f && !agent.pathPending)
         {
-            currentPoint = (currentPoint + 1) % patrolPoints.Length;
-            agent.SetDestination(patrolPoints[currentPoint].position);
+            if(whichPatrol == 0)
+            {
+                currentPoint = (currentPoint + 1) % patrolPoints.Length;
+                agent.SetDestination(patrolPoints[currentPoint].position);
+            }
+            if(whichPatrol == 1)
+            {
+                currentPoint2 = (currentPoint2 + 1) % patrolPoints1.Length;
+                agent.SetDestination(patrolPoints1[currentPoint2].position);
+            }
         }
     }
 

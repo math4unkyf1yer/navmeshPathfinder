@@ -10,6 +10,7 @@ public class LeverInteract : MonoBehaviour
     public GameObject player;
     public KeyCode interactKey;// Key to interact
     private PlayerMovement playerMovementScript;
+    private EnemyPatrol enemyScript;
     public TextMeshProUGUI interactText;
     private bool islever = false;
 
@@ -18,10 +19,15 @@ public class LeverInteract : MonoBehaviour
     private Vector3[] targetPos;
     private bool isSliding;
     public float slideSpeed = 10f;
+    public int changePatrol;
 
     private void Start()
     {
         playerMovementScript = player.GetComponent<PlayerMovement>();
+        if(GameObject.Find("Enemy") != null)
+        {
+            enemyScript = GameObject.Find("Enemy").GetComponent<EnemyPatrol>();
+        }
         targetPos = new Vector3[targetPosition.Length];
         for (int i = 0; i < targetPosition.Length; i++)
         {
@@ -51,6 +57,10 @@ public class LeverInteract : MonoBehaviour
                 // If player presses the interact key and is not hiding
                 if (Input.GetKeyDown(interactKey) && islever == false)
                 {
+                    if(enemyScript != null)
+                    {
+                        enemyScript.whichPatrol = changePatrol;
+                    }
                     islever = true;
                     isSliding = true;
                 }
