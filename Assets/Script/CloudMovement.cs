@@ -13,7 +13,7 @@ public class CloudMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(new Vector3(1, 0, 0) * Time.deltaTime * 15f);
+        transform.Translate(new Vector3(1, 0, 0) * Time.deltaTime * 20f);
 
             if (transform.position.x > 1940f)
             {
