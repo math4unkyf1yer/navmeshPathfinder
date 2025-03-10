@@ -9,11 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 0
-    path: Assets/Scenes/TitleScreen.unity
-    guid: 3be93870d6d8beb4baa3a0d3845d9e24
-  - enabled: 1
     path: Assets/Scenes/MainPage.unity
     guid: 486b0b36de10fd64cb777a9e5845f671
+  - enabled: 1
+    path: Assets/Scenes/TitleScreen.unity
+    guid: 3be93870d6d8beb4baa3a0d3845d9e24
   - enabled: 1
     path: Assets/Scenes/Starting_Room.unity
     guid: 97147e44a6514d5489b1eb6024b43371

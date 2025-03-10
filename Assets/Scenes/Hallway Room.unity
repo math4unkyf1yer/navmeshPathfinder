@@ -16110,6 +16110,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall Double Sided (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1551182302560268800, guid: acdef8cbc4f48ed498b2d1e554b13589, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8003305065757742850, guid: acdef8cbc4f48ed498b2d1e554b13589, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5743324
@@ -22872,6 +22876,10 @@ PrefabInstance:
     - target: {fileID: 1551182302560268800, guid: acdef8cbc4f48ed498b2d1e554b13589, type: 3}
       propertyPath: m_Name
       value: Wall Double Sided (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1551182302560268800, guid: acdef8cbc4f48ed498b2d1e554b13589, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8003305065757742850, guid: acdef8cbc4f48ed498b2d1e554b13589, type: 3}
       propertyPath: m_LocalScale.x
