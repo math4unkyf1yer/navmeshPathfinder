@@ -22,6 +22,54 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
+    m_Name: XboxLeft
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: left
+    positiveButton: joystick button 5
+    altNegativeButton: joystick button 5
+    altPositiveButton: d
+    gravity: 0
+    dead: 0.19
+    sensitivity: 1
+    snap: 1
+    invert: 0
+    type: 2
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Run
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: down
+    positiveButton: joystick button 8
+    altNegativeButton: s
+    altPositiveButton: left shift
+    gravity: 0
+    dead: 0.19
+    sensitivity: 1
+    snap: 1
+    invert: 0
+    type: 2
+    axis: 1
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: RunController
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: down
+    positiveButton: joystick button 5
+    altNegativeButton: s
+    altPositiveButton: left shift
+    gravity: 0
+    dead: 0.19
+    sensitivity: 1
+    snap: 1
+    invert: 0
+    type: 2
+    axis: 1
+    joyNum: 0
+  - serializedVersion: 3
     m_Name: Vertical
     descriptiveName: 
     descriptiveNegativeName: 
@@ -36,6 +84,22 @@ InputManager:
     invert: 0
     type: 0
     axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: XboxLeftY
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: down
+    positiveButton: joystick button 7
+    altNegativeButton: joystick button 7
+    altPositiveButton: w
+    gravity: 3
+    dead: 0.001
+    sensitivity: 3
+    snap: 1
+    invert: 0
+    type: 2
+    axis: 1
     joyNum: 0
   - serializedVersion: 3
     m_Name: Fire1
@@ -293,3 +357,4 @@ InputManager:
     type: 0
     axis: 0
     joyNum: 0
+  m_UsePhysicalKeys: 1
