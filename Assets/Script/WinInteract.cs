@@ -20,12 +20,15 @@ public class WinInteract : MonoBehaviour
 
     private void Update()
     {
-        if (Vector3.Distance(transform.position, player.transform.position) < interactionRadius)
+        if(player != null)
         {
-            winPage.SetActive(true);
-            level.SetActive(false);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            if (Vector3.Distance(transform.position, player.transform.position) < interactionRadius)
+            {
+                winPage.SetActive(true);
+                level.SetActive(false);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
         }
     }
 }

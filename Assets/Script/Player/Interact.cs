@@ -39,9 +39,9 @@ public class Interact : MonoBehaviour
             if (Vector3.Distance(transform.position, player.transform.position) < interactionRadius)
             {
                 if (playerMovementScript.isHiding == false)
-                    interactText.text = "Presse E to hide";
+                    interactText.text = "Press E to hide";
                 else
-                    interactText.text = "Presse E to unhide";
+                    interactText.text = "Press E to unhide";
                 // If player presses the interact key and is not hiding
                 if (Input.GetKeyDown(interactKey) && !playerMovementScript.isHiding)
                 {
