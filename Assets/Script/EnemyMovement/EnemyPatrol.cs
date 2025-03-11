@@ -171,7 +171,10 @@ public class EnemyPatrol : MonoBehaviour
     void Patrol()
     {
         enemySound.Stop();
-        audioScript.StartAudio();
+        if (!audioScript.levelAudio.isPlaying)
+        {
+            audioScript.StartAudio();
+        }
 
         if (agent.remainingDistance < 0.5f && !agent.pathPending)
         {

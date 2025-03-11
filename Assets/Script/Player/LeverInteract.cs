@@ -53,7 +53,7 @@ public class LeverInteract : MonoBehaviour
         {
             if (Vector3.Distance(transform.position, player.transform.position) < interactionRadius && islever == false)
             {
-                interactText.text = "Presse E to move lever";
+                interactText.text = "Press E to move lever";
                 // If player presses the interact key and is not hiding
                 if (Input.GetKeyDown(interactKey) && islever == false)
                 {

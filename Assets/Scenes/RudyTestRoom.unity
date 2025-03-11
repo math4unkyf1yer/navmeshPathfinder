@@ -96,7 +96,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 6ac775c9a29671345a751acd318b1683, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -4572,9 +4572,9 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 8bcca439398748e47b5f97aaafe0d3f7, type: 2}
   m_audioClip: {fileID: 8300000, guid: b1202ed0401e8f541a89b250827552dc, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.955
+  m_Volume: 0.623
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -7222,6 +7222,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2040327093}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1 &848288428 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5449775779381486925, guid: 0b808481f92fcaf4ba11d256bf16a8c0, type: 3}
+  m_PrefabInstance: {fileID: 976892706}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &872721631
 GameObject:
   m_ObjectHideFlags: 0
@@ -8061,21 +8066,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 317694338701490737, guid: 0b808481f92fcaf4ba11d256bf16a8c0, type: 3}
-      propertyPath: m_Name
-      value: WinText
-      objectReference: {fileID: 0}
-    - target: {fileID: 3187210531166173907, guid: 0b808481f92fcaf4ba11d256bf16a8c0, type: 3}
-      propertyPath: m_text
-      value: U Win
-      objectReference: {fileID: 0}
     - target: {fileID: 4726580118963356921, guid: 0b808481f92fcaf4ba11d256bf16a8c0, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6122120611376103322, guid: 0b808481f92fcaf4ba11d256bf16a8c0, type: 3}
+      propertyPath: volumePage
+      value: 
+      objectReference: {fileID: 848288428}
     - target: {fileID: 8973055804013569654, guid: 0b808481f92fcaf4ba11d256bf16a8c0, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 9018562978354124684, guid: 0b808481f92fcaf4ba11d256bf16a8c0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10274,7 +10279,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -15370,7 +15375,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -15975,7 +15980,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
