@@ -68,17 +68,28 @@ public class EnemyPatrol : MonoBehaviour
 
     void CheckForPlayer()
     {
+        // Reset player detection
+        playerInSight = false;
+
+        Vector3 directionToPlayer = (player.position - transform.position).normalized;
+        float playerDistance = Vector3.Distance(transform.position, player.position);
+
+        // If the player is within attack range, kill them regardless of invisibility
+        if (playerDistance < 2.5f)
+        {
+            PlayerDeath();
+            return;
+        }
+
+        // If the player is invisible or hiding, still check attack range but don't chase
         if (playerMovementScript.isInvisible || playerMovementScript.isHiding)
         {
-            playerInSight = false;
             Lurking();
             return;
         }
 
-        playerInSight = false;
-        Vector3 directionToPlayer = (player.position - transform.position).normalized;
-
-        if (Vector3.Distance(transform.position, player.position) < detectionRange)
+        // Regular detection logic
+        if (playerDistance < detectionRange)
         {
             float angle = Vector3.Angle(transform.forward, directionToPlayer);
             if (angle < fieldOfViewAngle / 2)
@@ -124,7 +135,7 @@ public class EnemyPatrol : MonoBehaviour
         }
 
         float playerDistance = Vector3.Distance(transform.position, player.position);
-        if (playerDistance < 2.9f)
+        if (playerDistance < 2.5f)
         {
             PlayerDeath();
         }
