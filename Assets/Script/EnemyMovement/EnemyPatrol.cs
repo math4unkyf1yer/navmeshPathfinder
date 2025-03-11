@@ -20,6 +20,7 @@ public class EnemyPatrol : MonoBehaviour
     public bool playerInSight = false;
 
     public AudioSource enemySound;
+    public PlayStopAudio audioScript;
     public AudioClip enemyChaseSound;
 
     //player
@@ -74,17 +75,15 @@ public class EnemyPatrol : MonoBehaviour
         Vector3 directionToPlayer = (player.position - transform.position).normalized;
         float playerDistance = Vector3.Distance(transform.position, player.position);
 
-        // If the player is within attack range, kill them regardless of invisibility
-        if (playerDistance < 2.5f)
+        if (playerMovementScript.isHiding || playerMovementScript.isInvisible)
         {
-            PlayerDeath();
-            return;
-        }
-
-        // If the player is invisible or hiding, still check attack range but don't chase
-        if (playerMovementScript.isInvisible || playerMovementScript.isHiding)
-        {
-            Lurking();
+            Lurking(); // Make the enemy search instead of detecting
+                       // If the player is within attack range, kill them regardless of invisibility
+            if (playerDistance < 2.5f && !playerMovementScript.isHiding)
+            {
+                PlayerDeath();
+                return;
+            }
             return;
         }
 
@@ -125,6 +124,7 @@ public class EnemyPatrol : MonoBehaviour
         if (playerIsDEAD)
         {
             enemySound.Stop();
+            audioScript.StartAudio();
             return;
         }
 
@@ -132,6 +132,7 @@ public class EnemyPatrol : MonoBehaviour
         {
             enemySound.clip = enemyChaseSound;
             enemySound.Play();
+            audioScript.StopAudio();
         }
 
         float playerDistance = Vector3.Distance(transform.position, player.position);
@@ -170,6 +171,7 @@ public class EnemyPatrol : MonoBehaviour
     void Patrol()
     {
         enemySound.Stop();
+        audioScript.StartAudio();
 
         if (agent.remainingDistance < 0.5f && !agent.pathPending)
         {
