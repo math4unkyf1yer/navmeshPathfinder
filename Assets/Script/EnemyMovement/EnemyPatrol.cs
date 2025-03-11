@@ -130,6 +130,7 @@ public class EnemyPatrol : MonoBehaviour
         }
         else
         {
+            agent.speed = 5;
             agent.SetDestination(player.position);
         }
     }
@@ -163,6 +164,7 @@ public class EnemyPatrol : MonoBehaviour
         {
             if(whichPatrol == 0)
             {
+                agent.speed = 4;
                 currentPoint = (currentPoint + 1) % patrolPoints.Length;
                 agent.SetDestination(patrolPoints[currentPoint].position);
             }
