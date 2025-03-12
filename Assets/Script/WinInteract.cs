@@ -8,6 +8,8 @@ public class WinInteract : MonoBehaviour
     public GameObject player;
     public GameObject winPage;
     public GameObject level;
+    public AudioSource EnemySound;
+    public AudioSource mainSound;
 
     void OnDrawGizmosSelected()
     {
@@ -24,6 +26,8 @@ public class WinInteract : MonoBehaviour
         {
             if (Vector3.Distance(transform.position, player.transform.position) < interactionRadius)
             {
+                EnemySound.Stop();
+                mainSound.Stop();
                 winPage.SetActive(true);
                 level.SetActive(false);
                 Cursor.lockState = CursorLockMode.None;

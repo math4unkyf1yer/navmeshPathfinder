@@ -125,8 +125,7 @@ public class EnemyPatrol : MonoBehaviour
     {
         if (playerIsDEAD)
         {
-            enemySound.Stop();
-            audioScript.StartAudio();
+            enemySound.Stop();          
             return;
         }
 
@@ -177,9 +176,10 @@ public class EnemyPatrol : MonoBehaviour
 
     void Patrol()
     {
-        if (enemySound.isPlaying) // Check if the sound is currently playing
+        enemySound.Stop();
+        if (!audioScript.levelAudio.isPlaying)
         {
-            StartCoroutine(FadeOut(enemySound, 1f)); // Fade out over 1 second
+            audioScript.StartAudio();
         }
 
         if (agent.remainingDistance < 0.5f && !agent.pathPending)
@@ -199,25 +199,10 @@ public class EnemyPatrol : MonoBehaviour
             }
         }
     }
-    IEnumerator FadeOut(AudioSource audioSource, float fadeTime)
-    {
-        float startVolume = audioSource.volume;
 
-        while (audioSource.volume > 0)
-        {
-            audioSource.volume -= startVolume * Time.deltaTime / fadeTime;
-            yield return null;
-        }
-
-        audioSource.Stop();
-        audioSource.volume = startVolume; // Reset volume for next play
-        if (!audioScript.levelAudio.isPlaying)
-        {
-            audioScript.StartAudio();
-        }
-    }
     void PlayerDeath()
     {
+        enemySound.Stop();
         playerIsDEAD = true;
         deadPage.gameObject.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
