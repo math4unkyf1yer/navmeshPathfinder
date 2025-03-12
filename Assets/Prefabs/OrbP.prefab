@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.038, z: 0}
-  m_LocalScale: {x: 4.6616526, y: 4.6616526, z: 4.6616526}
+  m_LocalScale: {x: 3.8046079, y: 3.8046079, z: 3.8046079}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6681703572754053383}
@@ -71,6 +71,8 @@ MonoBehaviour:
   player: {fileID: 0}
   winPage: {fileID: 0}
   level: {fileID: 0}
+  EnemySound: {fileID: 0}
+  mainSound: {fileID: 0}
 --- !u!1001 &6570915146473660140
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -131,6 +133,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: c7129ab99ccd1244aaef238643c4d62f, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0b9e9309a1a7c194c8023a9cef171380, type: 2}
     - target: {fileID: 919132149155446097, guid: c7129ab99ccd1244aaef238643c4d62f, type: 3}
       propertyPath: m_Name
       value: orb
