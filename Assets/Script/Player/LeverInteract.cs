@@ -21,10 +21,12 @@ public class LeverInteract : MonoBehaviour
     public float slideSpeed = 10f;
     public int changePatrol;
     public AudioSource[] audioSources;
+    private Animator leverAnimation;
 
 
     private void Start()
     {
+        leverAnimation = gameObject.GetComponent<Animator>();
         playerMovementScript = player.GetComponent<PlayerMovement>();
         if(GameObject.Find("Enemy") != null)
         {
@@ -78,6 +80,7 @@ public class LeverInteract : MonoBehaviour
                 {
                     if(enemyScript != null)
                     {
+                        leverAnimation.SetBool("Pull", true);
                         enemyScript.whichPatrol = changePatrol;
                         audioSources[0].Play();
                         PlayClipAtPoint(audioSources[1].clip, wall[0].transform.position, 1f);
