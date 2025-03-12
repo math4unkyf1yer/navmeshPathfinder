@@ -20,6 +20,8 @@ public class LeverInteract : MonoBehaviour
     private bool isSliding;
     public float slideSpeed = 10f;
     public int changePatrol;
+    public AudioSource[] audioSources;
+
 
     private void Start()
     {
@@ -33,6 +35,8 @@ public class LeverInteract : MonoBehaviour
         {
             targetPos[i] = targetPosition[i].position; // Store each target position
         }
+
+        audioSources = GetComponents<AudioSource>();
     }
     void OnDrawGizmosSelected()
     {
@@ -46,7 +50,22 @@ public class LeverInteract : MonoBehaviour
     private void Update()
     {
         AcessLever();
+
+
     }
+
+    public static void PlayClipAtPoint(AudioClip clip, Vector3 position, [UnityEngine.Internal.DefaultValue("1.0F")] float volume)
+    {
+        GameObject gameObject = new GameObject("One shot audio");
+        gameObject.transform.position = position;
+        AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+        audioSource.clip = clip;
+        audioSource.spatialBlend = 1f;
+        audioSource.volume = volume;
+        audioSource.Play();
+        Object.Destroy(gameObject, clip.length * ((Time.timeScale < 0.01f) ? 0.01f : Time.timeScale));
+    }
+
     void AcessLever()
     {
         if (player != null)
@@ -60,6 +79,8 @@ public class LeverInteract : MonoBehaviour
                     if(enemyScript != null)
                     {
                         enemyScript.whichPatrol = changePatrol;
+                        audioSources[0].Play();
+                        PlayClipAtPoint(audioSources[1].clip, wall[0].transform.position, 1f);
                     }
                     islever = true;
                     isSliding = true;
@@ -81,6 +102,7 @@ public class LeverInteract : MonoBehaviour
 
                         if (Vector3.Distance(wall[i].transform.position, targetPos[i]) >= 0.01f)
                         {
+                            
                             allWallsReached = false; // If any wall is still moving, keep sliding
                         }
                     }
