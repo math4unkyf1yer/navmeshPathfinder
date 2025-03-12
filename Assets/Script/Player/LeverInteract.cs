@@ -76,7 +76,7 @@ public class LeverInteract : MonoBehaviour
             {
                 interactText.text = "Press E to move lever";
                 // If player presses the interact key and is not hiding
-                if (Input.GetKeyDown(interactKey) && islever == false)
+                if (Input.GetKeyDown(interactKey) && islever == false || Input.GetKeyDown(KeyCode.JoystickButton1) && islever == false)
                 {
                     if(enemyScript != null)
                     {

@@ -43,13 +43,13 @@ public class Interact : MonoBehaviour
                 else
                     interactText.text = "Press E to unhide";
                 // If player presses the interact key and is not hiding
-                if (Input.GetKeyDown(interactKey) && !playerMovementScript.isHiding)
+                if (Input.GetKeyDown(interactKey) && !playerMovementScript.isHiding || Input.GetKeyDown(KeyCode.JoystickButton1) && !playerMovementScript.isHiding)
                 {
                     // Trigger hide functionality
                     playerMovementScript.Hide(hidePos, unHidePos);
                 }
                 // If player is hiding, allow unhiding when pressing interact key
-                else if (Input.GetKeyDown(interactKey) && playerMovementScript.isHiding)
+                else if (Input.GetKeyDown(interactKey) && playerMovementScript.isHiding || Input.GetKeyDown(KeyCode.JoystickButton1) && playerMovementScript.isHiding)
                 {
                     // Trigger unhide functionality
                     playerMovementScript.UnHide();

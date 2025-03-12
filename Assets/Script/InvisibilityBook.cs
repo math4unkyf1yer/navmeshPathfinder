@@ -30,7 +30,7 @@ public class InvisibilityBook : MonoBehaviour
             {
                 invisText.text = "Press E to learn Invisibility Spell";
 
-                if (Input.GetKeyDown(KeyCode.E))
+                if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton1))
                 {
                     playerMovementScript.isSpellLearned = true;
                     invisText.text = "";

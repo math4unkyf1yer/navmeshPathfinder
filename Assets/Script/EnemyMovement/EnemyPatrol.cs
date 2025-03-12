@@ -22,6 +22,7 @@ public class EnemyPatrol : MonoBehaviour
     public AudioSource enemySound;
     public PlayStopAudio audioScript;
     public AudioClip enemyChaseSound;
+    public Animator enemyAnimation;
 
     //player
     public GameObject playerCharacter;
@@ -111,6 +112,7 @@ public class EnemyPatrol : MonoBehaviour
 
     void Lurking()
     {
+       
         if (!playerInSight && !isLurking && checkIfSawPlayer)
         {
             lastKnownPosition = player.position;
@@ -142,6 +144,8 @@ public class EnemyPatrol : MonoBehaviour
         }
         else
         {
+            enemyAnimation.SetBool("Search", false);
+            enemyAnimation.SetBool("Moving", true);
             agent.speed = 5;
             agent.SetDestination(player.position);
         }
@@ -149,9 +153,12 @@ public class EnemyPatrol : MonoBehaviour
 
     void LurkAtLastKnownPosition()
     {
+        
         fieldOfViewAngle = 360f; // Increase FOV while searching
         if (!agent.pathPending && agent.remainingDistance < 0.5f) // Ensure the enemy has reached the position
         {
+            enemyAnimation.SetBool("Moving", false);
+            enemyAnimation.SetBool("Search", true);
             agent.SetDestination(transform.position); // Stop moving
 
             currentLurkTime += Time.deltaTime; // Start the lurking timer
@@ -170,15 +177,16 @@ public class EnemyPatrol : MonoBehaviour
 
     void Patrol()
     {
-        enemySound.Stop();
-        if (!audioScript.levelAudio.isPlaying)
+        if (enemySound.isPlaying) // Check if the sound is currently playing
         {
-            audioScript.StartAudio();
+            StartCoroutine(FadeOut(enemySound, 1f)); // Fade out over 1 second
         }
 
         if (agent.remainingDistance < 0.5f && !agent.pathPending)
         {
-            if(whichPatrol == 0)
+            enemyAnimation.SetBool("Search", false);
+            enemyAnimation.SetBool("Moving", true);
+            if (whichPatrol == 0)
             {
                 agent.speed = 4;
                 currentPoint = (currentPoint + 1) % patrolPoints.Length;
@@ -191,7 +199,23 @@ public class EnemyPatrol : MonoBehaviour
             }
         }
     }
+    IEnumerator FadeOut(AudioSource audioSource, float fadeTime)
+    {
+        float startVolume = audioSource.volume;
 
+        while (audioSource.volume > 0)
+        {
+            audioSource.volume -= startVolume * Time.deltaTime / fadeTime;
+            yield return null;
+        }
+
+        audioSource.Stop();
+        audioSource.volume = startVolume; // Reset volume for next play
+        if (!audioScript.levelAudio.isPlaying)
+        {
+            audioScript.StartAudio();
+        }
+    }
     void PlayerDeath()
     {
         playerIsDEAD = true;

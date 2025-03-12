@@ -1522,7 +1522,6 @@ MonoBehaviour:
   closeItem:
   - {fileID: 1693604171}
   - {fileID: 1645892626}
-  - {fileID: 2025342787}
 --- !u!114 &773551602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2896,7 +2895,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 0.477
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

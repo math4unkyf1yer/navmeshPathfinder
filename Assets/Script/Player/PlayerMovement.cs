@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         GetInput();
-        if (Input.GetKeyDown(KeyCode.Q) && isSpellLearned && !isOnCooldown)
+        if (Input.GetKeyDown(KeyCode.Q) && isSpellLearned && !isOnCooldown || Input.GetKeyDown(KeyCode.JoystickButton3) && isSpellLearned && !isOnCooldown)
         {
             Debug.Log("player is invisible");
             ActivateInvisibility();
@@ -83,17 +83,17 @@ public class PlayerMovement : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        running = Input.GetKey(KeyCode.LeftShift) && currentStamina > 0f;
+        running = (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.JoystickButton8)) && currentStamina > 0f;
     }
 
     private void MovePlayer()
     {
-        // Calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-        moveDirection.y = 0; // Ensure no vertical movement
+        moveDirection.y = 0; // Prevent vertical movement
 
         float currentSpeed = running ? moveSpeed * runSpeedMultiplier : moveSpeed;
-        // Apply velocity directly for precise movement
+
+        // Apply movement with controller sensitivity
         rb.velocity = moveDirection.normalized * currentSpeed + new Vector3(0, rb.velocity.y, 0);
     }
 
