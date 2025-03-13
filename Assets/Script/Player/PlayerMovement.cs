@@ -66,29 +66,37 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         GetInput();
-        if (horizontalInput != 0 || verticalInput != 0)
+        // Only proceed if the player is moving and not hiding
+        if ((horizontalInput != 0 || verticalInput != 0) && !isHiding)
         {
-            if (running)
+            if (running) // Running state
             {
+                // If running sound isn't already playing, play running sound
                 if (!runing.isPlaying)
                 {
                     walking.enabled = false; // Stop walking sound if running
-                    runing.enabled = true;
+                    runing.enabled = true; // Play running sound
                 }
             }
-            else
+            else // Walking state (when not running)
             {
-                if (!walking.isPlaying && !runing.isPlaying) // Prevents overlapping sounds
+                // If running sound is playing, stop it
+                if (runing.isPlaying)
+                {
+                    runing.enabled = false;
+                }
+
+                // Only play walking sound if it's not already playing
+                if (!walking.isPlaying)
                 {
                     walking.enabled = true;
-                    runing.enabled = false;
                 }
             }
         }
-        else
+        else // If not moving
         {
-            walking.enabled = false;
-            runing.enabled = false;
+            walking.enabled = false; // Stop walking sound
+            runing.enabled = false; // Stop running sound
         }
         if (Input.GetKeyDown(KeyCode.Q) && isSpellLearned && !isOnCooldown || Input.GetKeyDown(KeyCode.JoystickButton3) && isSpellLearned && !isOnCooldown)
         {
