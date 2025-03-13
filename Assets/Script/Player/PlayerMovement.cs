@@ -66,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         GetInput();
-      /*  if (horizontalInput != 0 || verticalInput != 0)
+        if (horizontalInput != 0 || verticalInput != 0)
         {
             if (running)
             {
@@ -89,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
         {
             walking.enabled = false;
             runing.enabled = false;
-        }*/
+        }
         if (Input.GetKeyDown(KeyCode.Q) && isSpellLearned && !isOnCooldown || Input.GetKeyDown(KeyCode.JoystickButton3) && isSpellLearned && !isOnCooldown)
         {
             soundList.Play();
