@@ -139,7 +139,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.466
+  m_Volume: 0.217
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -334,7 +334,11 @@ PrefabInstance:
     - target: {fileID: 652592622408686938, guid: 2404117f3d0c94b4191f52c815c0c58b, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: -7824338671135486113, guid: 10a7be9fcec5e634fa78c2bf6df301d7, type: 2}
+    - target: {fileID: 1951818920923986400, guid: 2404117f3d0c94b4191f52c815c0c58b, type: 3}
+      propertyPath: UVModule.sprites.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f50ee2403084da64b9b001e897dd49dd, type: 3}
     - target: {fileID: 2014986047147146789, guid: 2404117f3d0c94b4191f52c815c0c58b, type: 3}
       propertyPath: m_LocalScale.x
       value: 2.4490204

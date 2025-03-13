@@ -83,7 +83,7 @@ public class LeverInteract : MonoBehaviour
                         leverAnimation.SetBool("Pull", true);
                         enemyScript.whichPatrol = changePatrol;
                         audioSources[0].Play();
-                        PlayClipAtPoint(audioSources[1].clip, wall[0].transform.position, 1f);
+                        PlayClipAtPoint(audioSources[1].clip, wall[0].transform.position, 0.5f);
                     }
                     islever = true;
                     isSliding = true;

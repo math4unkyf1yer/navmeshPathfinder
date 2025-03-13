@@ -208,6 +208,7 @@ public class EnemyPatrol : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Destroy(playerCharacter);
+        gameObject.SetActive(false);
     }
 
     void OnDrawGizmos()

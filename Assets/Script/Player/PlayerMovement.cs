@@ -36,6 +36,9 @@ public class PlayerMovement : MonoBehaviour
     public bool isInvisible;
     private Vignette vignette;
     public PostProcessVolume postProcessVolume;
+    public AudioSource soundList;
+    public AudioSource walking;
+    public AudioSource runing;
 
     void Start()
     {
@@ -54,19 +57,49 @@ public class PlayerMovement : MonoBehaviour
         {
             vignette.intensity.value = 0f;
         }
+
+        soundList = GetComponent<AudioSource>();
+    
     }
 
 
     void Update()
     {
         GetInput();
+      /*  if (horizontalInput != 0 || verticalInput != 0)
+        {
+            if (running)
+            {
+                if (!runing.isPlaying)
+                {
+                    walking.enabled = false; // Stop walking sound if running
+                    runing.enabled = true;
+                }
+            }
+            else
+            {
+                if (!walking.isPlaying && !runing.isPlaying) // Prevents overlapping sounds
+                {
+                    walking.enabled = true;
+                    runing.enabled = false;
+                }
+            }
+        }
+        else
+        {
+            walking.enabled = false;
+            runing.enabled = false;
+        }*/
         if (Input.GetKeyDown(KeyCode.Q) && isSpellLearned && !isOnCooldown || Input.GetKeyDown(KeyCode.JoystickButton3) && isSpellLearned && !isOnCooldown)
         {
+            soundList.Play();
             Debug.Log("player is invisible");
             ActivateInvisibility();
         }
         UpdateStaminaSlider();
         HandleStamina();
+
+        
         
     }
 
@@ -89,8 +122,9 @@ public class PlayerMovement : MonoBehaviour
     private void MovePlayer()
     {
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-        moveDirection.y = 0; // Prevent vertical movement
 
+        moveDirection.y = 0; // Prevent vertical movement
+       
         float currentSpeed = running ? moveSpeed * runSpeedMultiplier : moveSpeed;
 
         // Apply movement with controller sensitivity
@@ -115,10 +149,12 @@ public class PlayerMovement : MonoBehaviour
             // If the cooldown timer is running, do not regenerate stamina
             if (staminaCooldownTimer > 0f)
             {
+                
                 staminaCooldownTimer -= Time.deltaTime;
             }
             else
             {
+                
                 if (moveSpeed != 5) moveSpeed = 5;
                 // Regenerate stamina when not running and cooldown has passed
                 currentStamina += staminaRegenRate * Time.deltaTime;
@@ -154,6 +190,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isInvisible)
         {
+
             isOnCooldown = true;
             isInvisible = true;
 
