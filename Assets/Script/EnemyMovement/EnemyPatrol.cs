@@ -137,7 +137,7 @@ public class EnemyPatrol : MonoBehaviour
         }
 
         float playerDistance = Vector3.Distance(transform.position, player.position);
-        if (playerDistance < 2.5f)
+        if (playerDistance < 1.5f)
         {
             PlayerDeath();
         }
@@ -200,7 +200,7 @@ public class EnemyPatrol : MonoBehaviour
         }
     }
 
-    void PlayerDeath()
+    public void PlayerDeath()
     {
         enemySound.Stop();
         playerIsDEAD = true;

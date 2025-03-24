@@ -11,8 +11,10 @@ public class LeverInteract : MonoBehaviour
     public KeyCode interactKey;// Key to interact
     private PlayerMovement playerMovementScript;
     private EnemyPatrol enemyScript;
+    private Whisp whispScript;
     public TextMeshProUGUI interactText;
     private bool islever = false;
+    public bool door;
 
     public Transform[] targetPosition;
     public GameObject[] wall;
@@ -22,6 +24,7 @@ public class LeverInteract : MonoBehaviour
     public int changePatrol;
     public AudioSource[] audioSources;
     private Animator leverAnimation;
+    public Animator doorAnimation;
 
 
     private void Start()
@@ -32,10 +35,17 @@ public class LeverInteract : MonoBehaviour
         {
             enemyScript = GameObject.Find("Enemy").GetComponent<EnemyPatrol>();
         }
-        targetPos = new Vector3[targetPosition.Length];
-        for (int i = 0; i < targetPosition.Length; i++)
+        if (GameObject.Find("Whisp") != null)
         {
-            targetPos[i] = targetPosition[i].position; // Store each target position
+            whispScript = GameObject.Find("Whisp").GetComponent<Whisp>();
+        }
+        if(targetPosition[0] != null)
+        {
+            targetPos = new Vector3[targetPosition.Length];
+            for (int i = 0; i < targetPosition.Length; i++)
+            {
+                targetPos[i] = targetPosition[i].position; // Store each target position
+            }
         }
 
         audioSources = GetComponents<AudioSource>();
@@ -80,11 +90,14 @@ public class LeverInteract : MonoBehaviour
                 {
                     if(enemyScript != null)
                     {
-                        leverAnimation.SetBool("Pull", true);
                         enemyScript.whichPatrol = changePatrol;
-                        audioSources[0].Play();
-                        PlayClipAtPoint(audioSources[1].clip, wall[0].transform.position, 0.5f);
+                    } else if(whispScript != null)
+                    {
+                        whispScript.whichPatrol = changePatrol;
                     }
+                    leverAnimation.SetBool("Pull", true);
+                    audioSources[0].Play();
+                    PlayClipAtPoint(audioSources[1].clip, wall[0].transform.position, 0.5f);
                     islever = true;
                     isSliding = true;
                 }
@@ -95,27 +108,42 @@ public class LeverInteract : MonoBehaviour
             }
             if (isSliding)
             {
-                bool allWallsReached = true;
-
-                for (int i = 0; i < wall.Length; i++)
+                if (!door)
                 {
-                    if (i < targetPos.Length) // Ensure index is valid
-                    {
-                        wall[i].transform.position = Vector3.MoveTowards(wall[i].transform.position, targetPos[i], slideSpeed * Time.deltaTime);
-
-                        if (Vector3.Distance(wall[i].transform.position, targetPos[i]) >= 0.01f)
-                        {
-                            
-                            allWallsReached = false; // If any wall is still moving, keep sliding
-                        }
-                    }
+                    DoorSlide();
                 }
-
-                if (allWallsReached) // Stop sliding when all walls reach targets
+                else
                 {
-                    isSliding = false;
+                    DoorAnimation();
                 }
             }
         }
+    }
+
+    void DoorSlide()
+    {
+        bool allWallsReached = true;
+
+        for (int i = 0; i < wall.Length; i++)
+        {
+            if (i < targetPos.Length) // Ensure index is valid
+            {
+                wall[i].transform.position = Vector3.MoveTowards(wall[i].transform.position, targetPos[i], slideSpeed * Time.deltaTime);
+
+                if (Vector3.Distance(wall[i].transform.position, targetPos[i]) >= 0.01f)
+                {
+                    allWallsReached = false; // If any wall is still moving, keep sliding
+                }
+            }
+        }
+
+        if (allWallsReached) // Stop sliding when all walls reach targets
+        {
+            isSliding = false;
+        }
+    }
+    void DoorAnimation()
+    {
+        doorAnimation.SetBool("doorOpen", true);
     }
 }

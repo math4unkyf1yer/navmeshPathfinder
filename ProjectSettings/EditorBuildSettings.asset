@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RudyTestRoom.unity
     guid: 2dad3d4cfd4486849985111f9c886a9e
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Starting_Room.unity
     guid: 97147e44a6514d5489b1eb6024b43371
   - enabled: 0

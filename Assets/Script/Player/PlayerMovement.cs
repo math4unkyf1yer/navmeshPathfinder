@@ -178,17 +178,17 @@ public class PlayerMovement : MonoBehaviour
             staminaSlider.value = currentStamina;
         }
     }
-    public void Hide(Transform hidePos, Transform unHidePos)
+    public void Hide(Transform hidePos)
     {
-        unhide = unHidePos;
         rb.isKinematic = true; // Disables physics but keeps collisions
         rb.useGravity = false;
         transform.position = hidePos.position; // Move to hiding position
         isHiding = true; // Set to hiding state
     }
 
-    public void UnHide()
+    public void UnHide(Transform unhidePos)
     {
+        unhide = unhidePos;
         isHiding = false;
         rb.isKinematic = false; // Re-enable physics
         rb.useGravity = true;  // Re-enable gravity
