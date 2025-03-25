@@ -321,9 +321,9 @@ public class Whisp : MonoBehaviour
 
     IEnumerator BulletTimer()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
         isAttacking = false;
-        yield return new WaitForSeconds(30f);
+        yield return new WaitForSeconds(45f);
         canAttack = true;
     }
     void OnDrawGizmos()
